@@ -175,8 +175,8 @@
                                             <p><span>(4.5)</span> based on 120</p>
                                         </div>
                                         <div class="price">
-                                            <del class="text-muted">&#8377;8,000</del>
-                                            <span class="price paid ms-2">&#8377;5,000</span>
+                                            <del class="text-muted">&#8377;800</del>
+                                            <span class="price paid ms-2">&#8377;500</span>
                                         </div>
                                     </div>
                                    
@@ -209,8 +209,8 @@
                                             <p><span>(4.5)</span> based on 120</p>
                                         </div>
                                         <div class="price">
-                                            <del class="text-muted">&#8377;8,000</del>
-                                            <span class="price paid ms-2">&#8377;5,000</span>
+                                            <del class="text-muted">&#8377;800</del>
+                                            <span class="price paid ms-2">&#8377;500</span>
                                         </div>
                                     </div>
                                     
