@@ -54,10 +54,18 @@ public class UserController {
 		    hasAccess = user.isPythonAccess();
 		} else if ("HTML/CSS".equals(subject)) {
 		    hasAccess = user.isHtmlcssAccess();
+		}else if ("Java".equals(subject)) {
+		    hasAccess = user.isHtmlcssAccess();
 		}
 		if(hasAccess) {
 			List<Quiz> lst1 =  quizdaoimpl.getQuizBySubject(subject);
-		    mv = new ModelAndView("userquiz");
+			if(subject.equals("Python")) {
+				mv = new ModelAndView("pythonquiz");
+			}else if(subject.equals("HTML/CSS")) {
+				mv = new ModelAndView("htmlcssquiz");
+			}else if(subject.equals("Java")) {
+				mv = new ModelAndView("javaquiz");
+			}
 		    mv.addObject("lst1",lst1);// for showing question
 			session.setAttribute("lst1", lst1);
 		}
@@ -99,10 +107,13 @@ public class UserController {
 		int userid = (int)session.getAttribute("userId");
 		userdaoimpl.updatePythonAccess(userid);
 		UserInfo updateuser = userdaoimpl.getUserByUserId(userid);
+		session.setAttribute("pythonAccess", updateuser.isPythonAccess());
+		session.setAttribute("htmlAccess", updateuser.isHtmlcssAccess());
 		session.setAttribute("user", updateuser);
 		List<Questions> lst = daoimpl.getQuestionBySubject("Python");
 	    ModelAndView mv = new ModelAndView("userpython");
 	    mv.addObject("lst", lst);          // for showing question
+	    mv.addObject("buy","Payment successful! You can now access the quiz.");
 		session.setAttribute("lst", lst);
 		return mv;
 	}
@@ -120,6 +131,7 @@ public class UserController {
 		List<Questions> lst = daoimpl.getQuestionBySubject("HTML/CSS");
 	    ModelAndView mv = new ModelAndView("userhtmlcss");
 	    mv.addObject("lst", lst); // for showing question
+	    mv.addObject("buy","Payment successful! You can now access the quiz.");
 		session.setAttribute("lst", lst);
 		return mv;
 	}

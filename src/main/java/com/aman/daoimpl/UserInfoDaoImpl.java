@@ -1,5 +1,6 @@
 package com.aman.daoimpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,19 @@ public class UserInfoDaoImpl implements UserInfoDao{
 		        e.printStackTrace();
 		        return false;
 		    }
+	}
+
+
+
+	@Override
+	public List<UserInfo> getAll() {
+		try {
+			List<UserInfo> lst = (List<UserInfo>) userRepository.findAll();
+			return lst;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 

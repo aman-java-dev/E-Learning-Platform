@@ -103,9 +103,10 @@ if (msg != null) {
             </div>
 
             <div class="form-input">
-                <label>DP</label>
+                <label>Profile Picture</label>
                 <input type="file" name="dp">
             </div>
+            
 
             <div class="form-input pt-30">
                 <input type="submit" value="Registration">

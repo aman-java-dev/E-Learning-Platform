@@ -1,4 +1,6 @@
 <!doctype html>
+<%@page import="com.aman.pojo.UserInfo"%>
+<%@page import="com.aman.pojo.Result"%>
 <%@page import="com.aman.pojo.Quiz"%>
 <%@page import="com.aman.pojo.Questions"%>
 <%@page import="java.util.List"%>
@@ -6,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Quiz | Education</title>
+    <title>USERS | Education</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -27,223 +29,82 @@
     <link rel="stylesheet" href="assets/css/slick.css">
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-/* ===== QUIZ UI UPGRADE ===== */
-/* ===== QUIZ TOP BAR ===== */
 
-.quiz-topbar {
+<style>
+/* ===== Result Page Custom UI (Scoped) ===== */
+.result-wrapper {
+    padding: 60px 0;
+}
+
+.result-card {
     background: #ffffff;
-    border-radius: 14px;
-    padding: 18px 28px;
-    margin-bottom: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    border-left: 6px solid #8f5bff;
-}
-
-.quiz-badge {
-    background: linear-gradient(90deg, #8f5bff, #6f42c1);
-    color: #fff;
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.quiz-info {
-    font-size: 15px;
-    font-weight: 600;
-    color: #444;
-}
-
-.timer-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #777;
-    display: block;
-    text-align: right;
-}
-
-.quiz-timer {
-    background: #2d2d2d;
-    color: #fff;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-/* OPTION SELECT FEEL */
-
-.option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    background: #fafafa;
-    border: 1px solid #eee;
-}
-
-.option:hover {
-    background: #f3edff;
-    border-color: #8f5bff;
-}
-
-.quiz-wrapper {
-    max-width: 900px;
-    margin: 40px auto;
-}
-
-.quiz-title {
-    text-align: center;
-    font-weight: 700;
-    color: #6f42c1;
-    margin-bottom: 35px;
-}
-
-.quiz-card {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 30px 35px;
-    margin-bottom: 30px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-    border-left: 6px solid #8f5bff;
-    transition: all 0.3s ease;
-}
-
-.quiz-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
-}
-
-.question {
-    font-size: 18px;
-    font-weight: 600;
-    color: #2d2d2d;
-    margin-bottom: 18px;
-}
-
-.option {
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.option:hover {
-    background: #f3edff;
-}
-
-.form-check-input {
-    cursor: pointer;
-}
-
-.form-check-label {
-    cursor: pointer;
-    font-size: 15px;
-    color: #444;
-}
-
-.submit-btn {
-    background: linear-gradient(90deg, #8f5bff, #6f42c1);
-    color: #ffffff;
-    border: none;
-    padding: 14px 55px;
-    font-size: 16px;
-    border-radius: 30px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    box-shadow: 0 8px 20px rgba(143,91,255,0.4);
-    transition: 0.3s;
-}
-
-.submit-btn:hover {
-    background: linear-gradient(90deg, #6f42c1, #8f5bff);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(143,91,255,0.55);
-}
-
-.quiz-action-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    margin-top: 30px;
-}
-
-/* Dropdown */
-.quiz-select {
-    height: 50px;
-    min-width: 220px;
     border-radius: 12px;
-    padding: 0 15px;
-    font-size: 15px;
-    border: 1px solid #ddd;
-}
-
-/* Button */
-.quiz-start-btn {
-    height: 50px;
-    padding: 0 42px;
-    border-radius: 30px;
-    border: none;
-    background: linear-gradient(90deg, #ff9f67, #ff7a18);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.quiz-start-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255,122,24,0.4);
-}
-.quiz-select-card {
-    max-width: 520px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    padding: 40px;
+    max-width: 100%;
     margin: auto;
-    background: #ffffff;
-    padding: 40px 35px;
-    border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-    text-align: center;
-    border-top: 6px solid #8f5bff;
 }
 
-.quiz-heading {
+.result-title {
     font-size: 28px;
     font-weight: 700;
     color: #6f42c1;
-    margin-bottom: 8px;
-}
-
-.quiz-subtext {
-    font-size: 14px;
-    color: #777;
     margin-bottom: 25px;
 }
 
-.quiz-select {
-    height: 48px;
+.score-box {
+    background: linear-gradient(135deg, #8e6efc, #6f42c1);
+    color: #fff;
     border-radius: 10px;
-    font-size: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-
-
-.quiz-start-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255,122,24,0.4);
+.score-box h2 {
+    font-size: 42px;
+    margin: 0;
+    font-weight: 700;
 }
 
+.score-box p {
+    margin: 0;
+    opacity: 0.9;
+}
 
+.result-details p {
+    font-size: 16px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e5e5e5;
+    margin: 0;
+}
+
+.result-details p:last-child {
+    border-bottom: none;
+}
+
+.status-pass {
+    color: #28a745;
+    font-weight: 700;
+}
+
+.status-fail {
+    color: #dc3545;
+    font-weight: 700;
+}
+
+.result-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.result-actions a {
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+}
 </style>
+
 </head>
 
 <body>
@@ -259,7 +120,7 @@
         </div>
     </div>
     <!-- Preloader Start -->
-    <%@include file="userheader.jsp" %>
+    <%@include file="header2.jsp" %>
     <!-- Header End -->
     <main>
         <!--? slider Area Start-->
@@ -271,12 +132,12 @@
                         <div class="row">
                             <div class="col-xl-8 col-lg-11 col-md-12">
                                 <div class="hero__caption hero__caption2">
-                                    <h1 data-animation="bounceIn" data-delay="0.2s">Quiz</h1>
+                                    <h1 data-animation="bounceIn" data-delay="0.2s">Users Details</h1>
                                     <!-- breadcrumb Start-->
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="userhome">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="#">Services</a></li> 
+                                            <li class="breadcrumb-item"><a href="#">USERS</a></li> 
                                         </ol>
                                     </nav>
                                     <!-- breadcrumb End -->
@@ -293,40 +154,85 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">
                         <div class="section-tittle text-center mb-55">
-                            <h2> Skill Test	</h2>
+<!--                             <h2>Quiz Result	</h2> -->
                         </div>
                     </div>
                 </div>
                  
                </div>
-           </div>      
+           </div> 
+        
+<%
+
+List<UserInfo> lst = (List<UserInfo>) request.getAttribute("lst");
+    if (lst != null && lst.size() > 0) {
+%>
+
+<div class="container mt-5">
+    <div class="result-card">
+
+        <h4 class="text-center mb-4" style="color:#6f42c1;">
+            
+        </h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>User ID</th>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>HTML Course Status</th>
+                        <th>Python Course Status</th>
+                        <th>Java Course Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <%
+                    int i = 1;
+                    for (UserInfo r : lst) {
+
+                %>
+                    <tr>
+                        <td><%= r.getUserid() %></td>
+                        <td><%= r.getUsername() %></td>
+                        <td><%= r.getEmail() %></td>
+                        <td>
+    <% if(r.isHtmlcssAccess()) { %>
+        <span style="color:green; font-size:18px;">&#9679; Subscribed</span>
+    <% } else { %>
+        <span style="color:red; font-size:18px;">&#9679; Not Subscribed</span>
+    <% } %>
+</td>
+
+<td>
+    <% if(r.isPythonAccess()) { %>
+        <span style="color:green; font-size:18px;">&#9679; Subscribed</span>
+    <% } else { %>
+        <span style="color:red; font-size:18px;">&#9679; Not Subscribed</span>
+    <% } %>
+</td>
+<td><span style="color: green; font-size: 18px;">&#9679; Free</span></td>
+                      
+                    </tr>
+                <%
+                    }
+                %>
+                </tbody>
+            </table>
         </div>
-       <div class="quiz-select-card">
 
-    <p class="quiz-subtext">Select a subject to start your quiz</p>
-
-    <form action="subjectquiz" method="post">
-        <div class="quiz-action-row">
-
-            <select name="subject" class="quiz-select" required>
-                <option value="">-- Select Subject --</option>
-                <option value="Java">Java</option>
-                <option value="Python">Python</option>
-                <option value="HTML/CSS">HTML/CSS</option>
-            </select>
-
-            <button type="submit" class="quiz-start-btn">
-                Start Quiz
-            </button>
-
-        </div>
-    </form>
-
+    </div>
 </div>
-</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<%
+    }
+%>
+
+
     </main>
-    
+    <br><br><br>
     <%@ include file="footer.jsp" %>
      
       <!-- Scroll Up -->
@@ -375,26 +281,6 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="./assets/js/plugins.js"></script>
     <script src="./assets/js/main.js"></script>
-    <script>
-    let time = 10 * 60; // 10 minutes
-    const timerEl = document.getElementById("quizTimer");
-
-    const quizTimer = setInterval(() => {
-        let min = Math.floor(time / 60);
-        let sec = time % 60;
-
-        timerEl.innerHTML =
-            String(min).padStart(2, '0') + ":" +
-            String(sec).padStart(2, '0');
-
-        if (time <= 0) {
-            clearInterval(quizTimer);
-            alert("Time is up! Submitting quiz.");
-            document.querySelector("form").submit();
-        }
-        time--;
-    }, 1000);
-</script>
     
 </body>
 </html>

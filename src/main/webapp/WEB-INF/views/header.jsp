@@ -18,7 +18,7 @@
                                         <nav>
                                             <ul id="navigation">                                                                                          
                                                 <li class="active" ><a href="index">Home</a></li>
-                                                <li><a href="courses">Courses</a></li>
+<!--                                                 <li><a href="courses">Courses</a></li> -->
 <!--                                                 <li><a href="about">About</a></li> -->
 <!--                                                 <li><a href="#">Blog</a> -->
 <!--                                                     <ul class="submenu"> -->
@@ -27,7 +27,7 @@
 <!--                                                         <li><a href="elements">Element</a></li> -->
 <!--                                                     </ul> -->
 <!--                                                 </li> -->
-                                                <li><a href="contact">Contact</a></li>
+<!--                                                 <li><a href="contact">Contact</a></li> -->
                                                 <!-- Button -->
                                                 <li class="button-header margin-left "><a href="register" class="btn">Join</a></li>
                                                 <li class="button-header"><a href="login" class="btn btn3">Log in</a></li>

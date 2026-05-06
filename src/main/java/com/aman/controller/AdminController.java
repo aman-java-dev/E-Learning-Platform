@@ -14,9 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.aman.daoimpl.QuestionsDaoImpl;
 import com.aman.daoimpl.QuizDaoImpl;
 import com.aman.daoimpl.ResultDaoImpl;
+import com.aman.daoimpl.UserInfoDaoImpl;
 import com.aman.pojo.Questions;
 import com.aman.pojo.Quiz;
 import com.aman.pojo.Result;
+import com.aman.pojo.UserInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +26,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminController {
+
+    private final UserInfoDaoImpl userInfoDaoImpl;
 	
 	@Autowired
 	private QuestionsDaoImpl daoimpl;
@@ -33,6 +37,10 @@ public class AdminController {
 
 	@Autowired
 	private QuizDaoImpl quizdaoimpl;
+
+    AdminController(UserInfoDaoImpl userInfoDaoImpl) {
+        this.userInfoDaoImpl = userInfoDaoImpl;
+    }
 	
 	@GetMapping("/admcourses")
 	public String admcourse() {
@@ -170,6 +178,16 @@ public class AdminController {
 		List<Result> lst = resultDaoImpl.getResults();
 		if(lst!=null) {
 				mv = new ModelAndView("admResult","lst",lst);
+		}
+		return mv;
+	}
+	
+	@GetMapping("/admUser")
+	public ModelAndView admuser(HttpServletRequest request) {
+		ModelAndView mv = null;
+		List<UserInfo> lst = userInfoDaoImpl.getAll();
+		if(lst!=null) {
+			mv = new ModelAndView("admUser","lst",lst);
 		}
 		return mv;
 	}

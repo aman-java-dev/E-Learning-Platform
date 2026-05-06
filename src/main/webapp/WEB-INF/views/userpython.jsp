@@ -54,6 +54,17 @@
                         <div class="row">
                             <div class="col-xl-8 col-lg-11 col-md-12">
                                 <div class="hero__caption hero__caption2">
+                                <%String buy = (String)request.getAttribute("buy"); 
+                                if(buy!=null){
+                                	
+                                
+                                %>
+                                <div class="alert alert-warning" style="margin-bottom:20px;">
+                                    <%=buy %>
+                                </div>
+                                <%
+                                }
+                                %>
                                     <h1 data-animation="bounceIn" data-delay="0.2s">Python Programming</h1>
                                     <!-- breadcrumb Start-->
                                     <nav aria-label="breadcrumb">

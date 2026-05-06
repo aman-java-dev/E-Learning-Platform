@@ -1,5 +1,7 @@
 package com.aman.dao;
 
+import java.util.List;
+
 import com.aman.pojo.UserInfo;
 
 public interface UserInfoDao {
@@ -9,5 +11,5 @@ public interface UserInfoDao {
 	UserInfo getUserByUserId(int userId);
 	public boolean updateHtmlCssAccess(int userId);
 	public boolean updatePythonAccess(int userId);
-
+	List<UserInfo> getAll();
 }

@@ -20,9 +20,10 @@
                                                 <li class="active" ><a href="home">Home</a></li>
                                                 <li><a href="admcourses">Courses</a></li>
 <!--                                                 <li><a href="admabout">About</a></li> -->
-                                                <li><a href="#">Quiz</a>
+                                                <li><a href="#">More</a>
                                                     <ul class="submenu">
                                                         <li><a href="admquiz">Quiz Details</a></li>
+                                                        <li><a href="admUser">User Details</a></li>
                                                         <li><a href="admResult">Result</a></li>
                                                     </ul>
                                                 </li>
