@@ -78,6 +78,17 @@ public class QuizDaoImpl implements QuizDao{
 		}
 	}
 	
+	@Override
+	public List<Quiz> getRandomQuizBySubject(String subject) {
+	    try {
+	        List<Quiz> lst = quizRepository.getRandomQuizBySubject(subject);
+	        return lst;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
 	
 	@Override
 	public List<Quiz> getAllQuiz() {

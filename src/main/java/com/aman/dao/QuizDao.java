@@ -11,4 +11,5 @@ public interface QuizDao {
 	boolean closeQuiz(Quiz q);
 	List<Quiz> getQuizBySubject(String subject);
 	List<Quiz> getAllQuiz();
+	List<Quiz> getRandomQuizBySubject(String subject);
 }

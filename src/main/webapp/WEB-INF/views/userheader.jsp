@@ -27,7 +27,7 @@
                                                         <li><a href="userResult">Result</a></li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="usercontact">Contact</a></li>
+                                                <!-- <li><a href="usercontact">Contact</a></li> -->
                                                 <!-- Button -->
                                                 <li class="button-header margin-left "><a href="#" class="btn"> <%
 									            String msg = (String)request.getAttribute("msgg");

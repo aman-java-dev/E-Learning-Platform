@@ -12,4 +12,6 @@ public interface UserInfoDao {
 	public boolean updateHtmlCssAccess(int userId);
 	public boolean updatePythonAccess(int userId);
 	List<UserInfo> getAll();
+	UserInfo getUserByEmail(String email);
+	boolean resetPassword(int userId, String newPassword);
 }

@@ -128,7 +128,7 @@ if (msg != null) {
                 </div>
                 
                 <!-- Forget Password -->
-                <a href="#" class="forget">Forget Password</a>
+<a href="forgotpassword" class="forget">Forget Password</a>
                 <!-- Forget Password -->
                 <a href="register" class="registration">Registration</a>
             </div>

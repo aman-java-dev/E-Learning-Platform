@@ -12,5 +12,7 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, Integer> {
 
 	@Query("From UserInfo where username=:user")
 	Optional<UserInfo> findByUsername(String user);
+	
+	Optional<UserInfo> findByEmail(String email);
 
 }

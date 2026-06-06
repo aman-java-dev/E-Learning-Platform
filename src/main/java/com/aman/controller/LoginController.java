@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +30,14 @@ public class LoginController {
 	
 	@Autowired
 	private UserInfoDaoImpl daoimpl;
-	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
     @Qualifier("otpMailService")
     private MailSender msend;
+	
+	@Value("${file.upload.path}")
+	private String uploadPath;
 
 	@Autowired
 	private GetOtp otp;
@@ -101,15 +107,14 @@ public class LoginController {
 		u.setUsername(firstName+"@123");
 		u.setRole("user");
 		u.setEmail(email);
-		u.setPassword(password);
+		String rawPassword = password;
+		u.setPassword(passwordEncoder.encode(password));
 		u.setDp(file.getOriginalFilename());
-		String serverpath = "D:\\programming\\Spring boot\\Spring-Boot-JPA-learnify-App\\src\\main\\webapp\\resources\\dp\\";
+		String serverpath = uploadPath;
 		File sf = new File(serverpath+file.getOriginalFilename());
 		file.transferTo(sf);
 		if (daoimpl.addNewUser(u)) {
-//			ot = otp.getOTP();
-//			System.out.println("Otp is = "+ot);
-			msend.sendMail(u.getEmail(),u.getUsername(),u.getPassword());
+			msend.sendMail(u.getEmail(),u.getUsername(), rawPassword);
 			m.addAttribute("msg", "Registered successfully. You can login now.");
 			m.addAttribute("msgType", "success");
 			return "login";
@@ -166,4 +171,57 @@ public class LoginController {
 		}
 		return "index";
 	}
+	
+	@GetMapping("/forgotpassword")
+	public String forgotPassword() {
+	    return "forgotpassword";
+	}
+
+	@PostMapping("/sendotp")
+	public String sendOtp(@RequestParam("email") String email, Model m) {
+	    UserInfo user = daoimpl.getUserByEmail(email);
+	    if (user == null) {
+	        m.addAttribute("msg", "No account found with this email!");
+	        m.addAttribute("msgType", "error");
+	        return "forgotpassword";
+	    }
+	    ot = otp.getOTP();
+	    msend.sendOtpMail(email, ot);
+	    m.addAttribute("email", email);
+	    m.addAttribute("msg", "OTP sent to your email!");
+	    m.addAttribute("msgType", "success");
+	    return "verifyotp";
+	}
+
+	@PostMapping("/verifyotp")
+	public String verifyOtp(@RequestParam("email") String email,
+	        @RequestParam("otp") int enteredOtp, Model m) {
+	    if (enteredOtp == ot) {
+	        m.addAttribute("email", email);
+	        return "resetpassword";
+	    } else {
+	        m.addAttribute("msg", "Invalid OTP! Please try again.");
+	        m.addAttribute("msgType", "error");
+	        m.addAttribute("email", email);
+	        return "verifyotp";
+	    }
+	}
+	
+	@PostMapping("/resetpassword")
+	public String resetPassword(@RequestParam("email") String email,
+	        @RequestParam("newPassword") String newPassword,
+	        @RequestParam("confirmPassword") String confirmPassword, Model m) {
+	    if (!newPassword.equals(confirmPassword)) {
+	        m.addAttribute("msg", "Passwords do not match!");
+	        m.addAttribute("msgType", "error");
+	        m.addAttribute("email", email);
+	        return "resetpassword";
+	    }
+	    UserInfo user = daoimpl.getUserByEmail(email);
+	    daoimpl.resetPassword(user.getUserid(), newPassword);
+	    m.addAttribute("msg", "Password reset successful! Please login.");
+	    m.addAttribute("msgType", "success");
+	    return "login";
+	}
+
 }

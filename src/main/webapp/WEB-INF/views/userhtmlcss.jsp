@@ -108,12 +108,12 @@ int qno = 1;
         		
         	
 %>
-            <div class="question"><br><br>
-                Q<%=qno %>. :<%=q.getQuestion() %>
-            </div>
-            <div class="answer"><br>
-                <b>Answer:</b> <%=q.getAnswer() %>
-            </div><br><br>
+            <div class="question" style="font-size:17px; font-weight:600; margin-bottom:8px;">
+    Q<%=qno %>: <%=q.getQuestion() %>
+</div>
+<div class="answer" style="margin-bottom:25px; padding-bottom:15px; border-bottom:1px solid #eee;">
+    <b>Answer:</b> <%=q.getAnswer() %>
+</div>
             <%
             qno++;
         }

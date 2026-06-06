@@ -2,6 +2,7 @@ package com.aman.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import com.razorpay.Order;
@@ -12,9 +13,11 @@ import org.json.JSONObject;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+	@Value("${razorpay.key.id}")
+	private String razorpayKeyId;
 
-    private static final String RAZORPAY_KEY_ID = "rzp_test_8CxHBNuMQt1Qn8";
-    private static final String RAZORPAY_SECRET = "sXfbCn3B67Zq7KkVsnDeCXCl";
+	@Value("${razorpay.key.secret}")
+	private String razorpaySecret;
 
     @PostMapping("/create")
     @ResponseBody
@@ -26,7 +29,7 @@ public class OrderController {
 
             int amount = Integer.parseInt(amountParam) * 100;
 
-            RazorpayClient razorpay = new RazorpayClient(RAZORPAY_KEY_ID, RAZORPAY_SECRET);
+            RazorpayClient razorpay = new RazorpayClient(razorpayKeyId, razorpaySecret);
 
             JSONObject orderRequest = new JSONObject();
             orderRequest.put("amount", amount);

@@ -2,6 +2,7 @@ package com.aman.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import com.razorpay.Utils;
@@ -11,8 +12,9 @@ import org.json.JSONObject;
 @RequestMapping("/payment")
 public class PaymentVerifyController {
 
-    //private static final String RAZORPAY_SECRET = "MAFIXeAQ4tI4e7QlJwQI8lYg"; // same as order creation
-	private static final String RAZORPAY_SECRET = "sXfbCn3B67Zq7KkVsnDeCXCl"; // same as order creation
+    //private static final String RAZORPAY_SECRET = "dd"; // same as order creation
+	@Value("${razorpay.key.secret}")
+	private String razorpaySecret;
 
     @PostMapping("/verify")
     @ResponseBody
@@ -28,7 +30,7 @@ public class PaymentVerifyController {
             options.put("razorpay_payment_id", paymentId);
             options.put("razorpay_signature", signature);
 
-            boolean isValidSignature = Utils.verifyPaymentSignature(options, RAZORPAY_SECRET);
+            boolean isValidSignature = Utils.verifyPaymentSignature(options, razorpaySecret);
 
             if (isValidSignature) {
                 return ResponseEntity.ok("✅ Payment verified successfully!");

@@ -43,22 +43,26 @@ public class AdminController {
     }
 	
 	@GetMapping("/admcourses")
-	public String admcourse() {
+	public String admcourse(HttpServletRequest request) {
+		if (!isAdmin(request)) return "login";
 		return "admcourses";
 	}
 
 	@GetMapping("/admabout")
-	public String admabout() {
+	public String admabout(HttpServletRequest request) {
+		if (!isAdmin(request)) return "login";
 		return "admabout";
 	}
 	
 	@GetMapping("/home")
-	public String home() {
+	public String home(HttpServletRequest request) {
+		if (!isAdmin(request)) return "login";
 		return "home";
 	}
 	
 	@GetMapping("/admquiz")
 	public ModelAndView quizsubject(HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		List<Quiz> lst = quizdaoimpl.getAllQuiz();
 		Set<String> subjects = new LinkedHashSet<>();
 		for(Quiz q : lst) {
@@ -71,19 +75,19 @@ public class AdminController {
 		session.setAttribute("lst", lst);
 		session.setAttribute("subjects", subjects);
 		return mv;
-		
 	}
 	
 	@GetMapping("/admmanagecourse")
 	public ModelAndView listsubject(HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		List<Questions> lst = daoimpl.getAllQuestion();
 		Set<String> subjects = new LinkedHashSet<>();
 	    for (Questions q : lst) {
 	        subjects.add(q.getSubject());
 	    }
 	    ModelAndView mv = new ModelAndView("admmanagecourse");
-	    mv.addObject("lst", lst);          // for showing questions
-	    mv.addObject("subjects", subjects); // for dropdown
+	    mv.addObject("lst", lst);
+	    mv.addObject("subjects", subjects);
 		HttpSession session = request.getSession(false);
 		session.setAttribute("lst", lst);
 		session.setAttribute("subjects", subjects);
@@ -91,8 +95,8 @@ public class AdminController {
 	}
 	
 	@PostMapping("/saveQuestion")
-	public ModelAndView addQuestion(Questions q,HttpServletRequest request) {
-		
+	public ModelAndView addQuestion(Questions q, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		ModelAndView mv = null;
 		if(daoimpl.addQusetion(q)) {
 			mv = new ModelAndView("admmanagecourse","msg","Added Successfully");
@@ -100,15 +104,14 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admmanagecourse","msg","Faild ");
+			mv= new ModelAndView("admmanagecourse","msg","Failed");
 		}
 		return mv;
-		
 	}
 	
 	@PostMapping("/addQuiz")
-	public ModelAndView addQuiz(Quiz q,HttpServletRequest request)
-	{
+	public ModelAndView addQuiz(Quiz q, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		ModelAndView mv = null;
 		if(quizdaoimpl.addQuiz(q)) {
 			mv = new ModelAndView("admquiz","msg","Added Successfully");
@@ -116,13 +119,14 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admquiz","msg","Faild ");
+			mv= new ModelAndView("admquiz","msg","Failed");
 		}
 		return mv;
 	}
 	
 	@PostMapping("/updateQuiz")
 	public ModelAndView updateQuiz(Quiz q, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		ModelAndView mv = null;
 		if(quizdaoimpl.updateQuiz(q)) {
 			mv = new ModelAndView("admquiz","msg","Updated Successfully");
@@ -130,13 +134,14 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admquiz","msg","Faild ");
+			mv= new ModelAndView("admquiz","msg","Failed");
 		}
 		return mv;
 	}
 	
 	@GetMapping("/deleteQuiz")
-	public ModelAndView deleteQuiz(@RequestParam("id")int id,HttpServletRequest request) {
+	public ModelAndView deleteQuiz(@RequestParam("id")int id, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		Quiz q = new Quiz();
 		q.setId(id);
 		ModelAndView mv = null;
@@ -146,14 +151,15 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admquiz","msg","Faild ");
+			mv= new ModelAndView("admquiz","msg","Failed");
 		}
 		return mv;
 	}
 	
 	@PostMapping("/updateQuestion")
-	public ModelAndView updateQuestion(@RequestParam("question_Id")int question_id,@RequestParam("subject")String subject,
-			@RequestParam("question")String question,@RequestParam("answer")String answer,HttpServletRequest request) {
+	public ModelAndView updateQuestion(@RequestParam("question_Id")int question_id, @RequestParam("subject")String subject,
+			@RequestParam("question")String question, @RequestParam("answer")String answer, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		Questions q = new Questions();
 		q.setQuestion_id(question_id);
 		q.setSubject(subject);
@@ -166,24 +172,25 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admmanagecourse","msg","Faild ");
-			
+			mv= new ModelAndView("admmanagecourse","msg","Failed");
 		}
 		return mv;
 	}
+
 	@GetMapping("/admResult")
 	public ModelAndView admResult(HttpServletRequest request) {
-		
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		ModelAndView mv = null;
 		List<Result> lst = resultDaoImpl.getResults();
 		if(lst!=null) {
-				mv = new ModelAndView("admResult","lst",lst);
+			mv = new ModelAndView("admResult","lst",lst);
 		}
 		return mv;
 	}
 	
 	@GetMapping("/admUser")
 	public ModelAndView admuser(HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		ModelAndView mv = null;
 		List<UserInfo> lst = userInfoDaoImpl.getAll();
 		if(lst!=null) {
@@ -193,7 +200,8 @@ public class AdminController {
 	}
 	
 	@GetMapping("/deleteQuestion")
-	public ModelAndView deleteQuestion(@RequestParam("id")int question_id,HttpServletRequest request) {
+	public ModelAndView deleteQuestion(@RequestParam("id")int question_id, HttpServletRequest request) {
+		if (!isAdmin(request)) return new ModelAndView("login", "msg", "Please login as admin.");
 		Questions q = new Questions();
 		q.setQuestion_id(question_id);
 		ModelAndView mv = null;
@@ -203,8 +211,15 @@ public class AdminController {
 			HttpSession session = request.getSession(false);
 			session.setAttribute("lst", lst);
 		}else {
-			mv= new ModelAndView("admmanagecourse","msg","Faild ");
+			mv= new ModelAndView("admmanagecourse","msg","Failed");
 		}
 		return mv;
+	}
+	
+	private boolean isAdmin(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false);
+	    if (session == null) return false;
+	    UserInfo user = (UserInfo) session.getAttribute("loginuser");
+	    return user != null && "ADMIN".equals(user.getRole());
 	}
 }
